@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.gerenciamento.exception.EmailExistsException;
 import br.com.gerenciamento.model.Usuario;
+import br.com.gerenciamento.util.Util;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UsuarioServiceTest {
@@ -40,7 +41,6 @@ public class UsuarioServiceTest {
 	}
 	
 	
-	//Não passa pois o login não converte a senha para md5 antes de buscar no banco
 	@Test
 	public void realizarLoginComSucessoTest() throws Exception {
 		Usuario user = new Usuario();
@@ -48,7 +48,7 @@ public class UsuarioServiceTest {
 		user.setUser("NovoUsuario");
 		user.setSenha("SenhaNovoUsuario");
 		this.serviceUsuario.salvarUsuario(user);
-		Usuario logado = this.serviceUsuario.loginUser("NovoUsuario", "SenhaNovoUsuario");
+		Usuario logado = this.serviceUsuario.loginUser("NovoUsuario", Util.md5("SenhaNovoUsuario"));
 		Assert.assertEquals(user.getId(), logado.getId());
 	}
 	
